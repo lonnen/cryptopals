@@ -1,5 +1,7 @@
 package main
 
+import "testing"
+
 // https://www.cryptopals.com/sets/1
 // This is the qualifying set. We picked the exercises in it to ramp developers up gradually into coding cryptography, but also to verify that we were working with people who were ready to write code.
 
@@ -9,5 +11,14 @@ package main
 
 // 1. Convert hex to base64
 
-const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+func Test1(t *testing.T) {
+
+	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
+	computed := provided
+
+	if computed != expected {
+		t.Errorf("Computed %q, Expected %q", computed, expected)
+	}
+}
