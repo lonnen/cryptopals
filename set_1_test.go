@@ -11,7 +11,31 @@ import "testing"
 
 // 1. Convert hex to base64
 
-func Test1(t *testing.T) {
+func Test1ConvertHexToBase64(t *testing.T) {
+
+	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
+	computed := provided
+
+	if computed != expected {
+		t.Errorf("Computed %q, Expected %q", computed, expected)
+	}
+}
+
+func Test2FixedXOR(t *testing.T) {
+
+	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
+	computed := provided
+
+	if computed != expected {
+		t.Errorf("Computed %q, Expected %q", computed, expected)
+	}
+}
+
+func Test3SinglebyteXORcipher(t *testing.T) {
 
 	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
 	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
