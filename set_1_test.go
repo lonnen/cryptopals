@@ -40,10 +40,10 @@ func Test2FixedXOR(t *testing.T) {
 
 func Test3SinglebyteXORcipher(t *testing.T) {
 
-	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+	const provided string = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+	const expected string = "Cooking MC's like a pound of bacon"
 
-	computed := Set1Challenge3(provided)
+	computed, _ := Set1Challenge3(provided)
 
 	if computed != expected {
 		t.Errorf("Computed %q, Expected %q", computed, expected)
