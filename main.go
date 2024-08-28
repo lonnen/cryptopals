@@ -19,7 +19,7 @@ func hexToBase64(i string) (string, error) {
 
 func xor(left []byte, right []byte) ([]byte, error) {
 	if len(left) != len(right) {
-		return nil, errors.New("Buffers must have the same length")
+		return nil, errors.New("buffers must have the same length")
 	}
 
 	result := make([]byte, len(left))
