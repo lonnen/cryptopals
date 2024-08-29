@@ -27,9 +27,9 @@ func Test1ConvertHexToBase64(t *testing.T) {
 
 func Test2FixedXOR(t *testing.T) {
 
-	const provided string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+	const provided string = "1c0111001f010100061a024b53535009181c"
 	const provided_xor string = "686974207468652062756c6c277320657965"
-	const expected string = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+	const expected string = "746865206b696420646f6e277420706c6179"
 
 	computed := Set1Challenge2(provided, provided_xor)
 
