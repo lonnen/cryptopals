@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cryptopals
 
 import (
@@ -30,14 +27,11 @@ func xor(left []byte, right []byte) ([]byte, error) {
 	return result, nil
 }
 
-func Set1Challenge1(i string) string {
-	b64, _ := hexToBase64(i)
-	return b64
-}
-
-func Set1Challenge2(p string, q string) string {
-	decoded_p, _ := hexToBase64(p)
-	decoded_q, _ := hexToBase64(q)
-	decoded, _ := xor([]byte(decoded_p), []byte(decoded_q))
-	return string(decoded)
+func hex_xor(left string, right string) (string, error) {
+	decoded_left, _ := hex.DecodeString(left)
+	decoded_right, _ := hex.DecodeString(right)
+	decoded, e := xor(decoded_left, decoded_right)
+	reencoded := make([]byte, hex.EncodedLen(len(decoded)))
+	hex.Encode(reencoded, decoded)
+	return string(reencoded), e
 }
