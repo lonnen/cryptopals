@@ -14,7 +14,11 @@ func hexToBase64(i string) (string, error) {
 	return base64.StdEncoding.EncodeToString(bytes), nil
 }
 
-func xor(left []byte, right []byte) ([]byte, error) {
+func xor(left byte, right byte) byte {
+	return left ^ right
+}
+
+func xorCipher(left []byte, right []byte) ([]byte, error) {
 	if len(left) != len(right) {
 		return nil, errors.New("buffers must have the same length")
 	}
@@ -27,10 +31,10 @@ func xor(left []byte, right []byte) ([]byte, error) {
 	return result, nil
 }
 
-func hex_xor(left string, right string) (string, error) {
+func xorCipherStrings(left string, right string) (string, error) {
 	decoded_left, _ := hex.DecodeString(left)
 	decoded_right, _ := hex.DecodeString(right)
-	decoded, e := xor(decoded_left, decoded_right)
+	decoded, e := xorCipher(decoded_left, decoded_right)
 	reencoded := make([]byte, hex.EncodedLen(len(decoded)))
 	hex.Encode(reencoded, decoded)
 	return string(reencoded), e
