@@ -6,10 +6,10 @@ func Set1Challenge1(i string) string {
 }
 
 func Set1Challenge2(p string, q string) string {
-	z, _ := hex_xor(p, q)
+	z, _ := xorCipherStrings(p, q)
 	return z
 }
 
-func Set1Challenge3(hexEncoded string) (string, string) {
-	return "string", "string"
+func Set1Challenge3(hexEncoded string) (string, byte) {
+	return findSingleByteXOR(hexEncoded)
 }

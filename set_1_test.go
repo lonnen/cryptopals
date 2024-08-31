@@ -43,9 +43,9 @@ func Test3SinglebyteXORcipher(t *testing.T) {
 	const provided string = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 	const expected string = "Cooking MC's like a pound of bacon"
 
-	computed, _ := Set1Challenge3(provided)
+	computed, key := Set1Challenge3(provided)
 
 	if computed != expected {
-		t.Errorf("Computed %q, Expected %q", computed, expected)
+		t.Errorf("Computed %q, %q Expected %q", computed, key, expected)
 	}
 }
