@@ -10,22 +10,31 @@ import (
 //go:embed english
 var english embed.FS
 
-var files = map[string]string{
-	"monograms": "english_monograms.txt",
-	"bigrams":   "english_bigrams.txt",
-	"trigrams":  "english_trigrams.txt",
-	"quadgrams": "english_quadgrams.txt",
+type NGrams int
+
+const (
+	Monograms NGrams = 1
+	Bigrams          = 2
+	Trigrams         = 3
+	Quadgrams        = 4
+)
+
+var files = map[NGrams]string{
+	Monograms: "english_monograms.txt",
+	Bigrams:   "english_bigrams.txt",
+	Trigrams:  "english_trigrams.txt",
+	Quadgrams: "english_quadgrams.txt",
 }
 
-func grams(count string) {
-	filename := files[count]
+func grams(size NGrams) {
+	filename := files[size]
 	f, err := english.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var gramCounts = make(map[string]float64)
-	var gramCount = 1 // get this from a map or enum?
+	var gramCount = int(size)
 	var total = 0.0
 	// parse file into string: int
 	i := 0
