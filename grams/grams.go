@@ -44,13 +44,17 @@ func grams(size NGrams) map[string]float64 {
 		// count-length collection of letters
 		gram := f[i : i+gramCount]
 		// advance the pointer past the letters and space
-		i += gramCount + 1
+		i = i + gramCount + 1
 		// grab the number
 		j = i
-		for i < len(f) && f[i] != 10 {
+		for i < len(f) {
+			if f[i] == 10 {
+				break
+			}
 			i++
 		}
-		c := f[j:i]
+		c := f[j : i-1] // exclude the newline from the number
+		i++             // move to the start of the next line
 
 		if err != nil {
 			log.Fatal("Error while parsing file")
