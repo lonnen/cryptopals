@@ -22,3 +22,14 @@ func TestEmptyChunk(t *testing.T) {
 		t.Errorf("Chunks with slices returned a non-empty array")
 	}
 }
+
+func TestMonograms(t *testing.T) {
+	expected := 26
+
+	monograms := grams(1)
+	monogramCount := len(monograms)
+
+	if monogramCount != expected {
+		t.Errorf("Expected %d unique monograms, got %d", expected, monogramCount)
+	}
+}

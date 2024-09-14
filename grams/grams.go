@@ -2,12 +2,13 @@ package grams
 
 import (
 	"embed"
+	"io/fs"
 	"log"
 	"math"
 	"strconv"
 )
 
-//go:embed english
+//go:embed english/*.txt
 var english embed.FS
 
 type NGrams int
@@ -20,13 +21,13 @@ const (
 )
 
 var files = map[NGrams]string{
-	Monograms: "english_monograms.txt",
-	Bigrams:   "english_bigrams.txt",
-	Trigrams:  "english_trigrams.txt",
-	Quadgrams: "english_quadgrams.txt",
+	Monograms: "english/english_monograms.txt",
+	Bigrams:   "english/english_bigrams.txt",
+	Trigrams:  "english/english_trigrams.txt",
+	Quadgrams: "english/english_quadgrams.txt",
 }
 
-func grams(size NGrams) {
+func grams(size NGrams) map[string]float64 {
 	filename := files[size]
 	f, err := english.ReadFile(filename)
 	if err != nil {
@@ -46,7 +47,7 @@ func grams(size NGrams) {
 		i += gramCount + 1
 		// grab the number
 		j = i
-		for f[i] != 10 {
+		for i < len(f) && f[i] != 10 {
 			i++
 		}
 		c := f[j:i]
@@ -61,7 +62,7 @@ func grams(size NGrams) {
 	for g, c := range gramCounts {
 		gramCounts[g] = math.Log(c / total)
 	}
-
+	return gramCounts
 }
 
 func chunk(text string, size int) []string {
@@ -77,4 +78,20 @@ func chunk(text string, size int) []string {
 	}
 
 	return chunks
+}
+
+func getAllFilenames(efs *embed.FS) (files []string, err error) {
+	if err := fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() {
+			return nil
+		}
+
+		files = append(files, path)
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return files, nil
 }
