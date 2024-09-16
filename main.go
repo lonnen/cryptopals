@@ -1,11 +1,12 @@
 package cryptopals
 
 import (
+	"cryptopals/grams"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"math"
-	"strings"
 )
 
 func hexToBase64(i string) (string, error) {
@@ -50,43 +51,7 @@ func xorCipherSingleByte(cipher []byte, key byte) []byte {
 	return result
 }
 
-// source: https://github.com/piersy/ascii-char-frequency-english/blob/main/ascii_freq.txt
-var englishLetterFrequency = map[string]float64{
-	"a": 11.7,
-	"b": 4.4,
-	"c": 5.2,
-	"d": 3.2,
-	"e": 2.8,
-	"f": 4,
-	"g": 1.6,
-	"h": 4.2,
-	"i": 7.3,
-	"j": 0.51,
-	"k": 0.86,
-	"l": 2.4,
-	"m": 3.8,
-	"n": 2.3,
-	"o": 7.6,
-	"p": 4.3,
-	"q": 0.22,
-	"r": 2.8,
-	"s": 6.7,
-	"t": 16,
-	"u": 1.2,
-	"v": 0.82,
-	"w": 5.5,
-	"x": 0.045,
-	"y": 0.76,
-	"z": 0.045,
-}
-
-func isItEnglish(buffer []byte) float64 {
-	score := 0.0
-	for _, b := range buffer {
-		score += math.Max(math.Log(englishLetterFrequency[strings.ToLower(string(b))]), -100.0)
-	}
-	return score
-}
+var englishLetterFrequency = grams.Grams(grams.Monograms)
 
 func findSingleByteXOR(hexed string) (string, byte) {
 	decoded_hexed, _ := hex.DecodeString(hexed)
@@ -97,8 +62,8 @@ func findSingleByteXOR(hexed string) (string, byte) {
 	for b := range 256 {
 		key := byte(b)
 		decoded := xorCipherSingleByte(decoded_hexed, key)
-		score := isItEnglish(decoded)
-
+		score := grams.Score(decoded, englishLetterFrequency)
+		fmt.Printf("%s %g %s\n", string(key), score, string(decoded))
 		if score > bestScore {
 			bestScore = score
 			bestKey = key
