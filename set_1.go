@@ -10,6 +10,10 @@ func Set1Challenge2(p string, q string) string {
 	return z
 }
 
-func Set1Challenge3(hexEncoded string) (string, byte) {
+func Set1Challenge3(hexEncoded string) (string, byte, float64) {
 	return findSingleByteXOR(hexEncoded)
+}
+
+func Set1Challenge4(hexEncodedFile string) (string, byte, float64) {
+	return detectSingleByteXOR(hexEncodedFile)
 }
