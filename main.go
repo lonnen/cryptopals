@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"math"
+	"strings"
 )
 
 func hexToBase64(i string) (string, error) {
@@ -50,9 +51,9 @@ func xorCipherSingleByte(cipher []byte, key byte) []byte {
 	return result
 }
 
-var englishLetterFrequency = grams.Grams(grams.Monograms)
+var englishLetterFrequency = grams.Grams(grams.Bigrams)
 
-func findSingleByteXOR(hexed string) (string, byte) {
+func findSingleByteXOR(hexed string) (string, byte, float64) {
 	decoded_hexed, _ := hex.DecodeString(hexed)
 
 	bestKey := byte(0)
@@ -61,7 +62,7 @@ func findSingleByteXOR(hexed string) (string, byte) {
 	for b := range 256 {
 		key := byte(b)
 		decoded := xorCipherSingleByte(decoded_hexed, key)
-		score := grams.Score(decoded, englishLetterFrequency)
+		score := grams.Score(decoded, englishLetterFrequency, grams.Bigrams)
 		if score > bestScore {
 			bestScore = score
 			bestKey = key
@@ -69,5 +70,21 @@ func findSingleByteXOR(hexed string) (string, byte) {
 		}
 	}
 
-	return bestMessage, bestKey
+	return bestMessage, bestKey, bestScore
+}
+
+func detectSingleByteXOR(hexEncodedFile string) (string, byte, float64) {
+	bestLine := ""
+	bestKey := byte(0)
+	bestScore := math.Inf(-1)
+	for _, line := range strings.Split(hexEncodedFile, "\n") {
+		decoded, key, score := findSingleByteXOR(line)
+		if score > bestScore {
+			bestLine = decoded
+			bestKey = key
+			bestScore = score
+		}
+	}
+
+	return bestLine, bestKey, bestScore
 }
