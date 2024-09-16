@@ -1,3 +1,3 @@
-module Cryptopals
+module cryptopals
 
 go 1.23
