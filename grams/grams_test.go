@@ -6,7 +6,7 @@ import (
 
 func TestChunk(t *testing.T) {
 	expected := [4]string{"ABCD", "BCDE", "CDEF", "DEFG"}
-	chunks := chunk("ABCDEFG", 4)
+	chunks := Chunk("ABCDEFG", 4)
 
 	for i := range chunks {
 		if chunks[i] != expected[i] {
@@ -16,7 +16,7 @@ func TestChunk(t *testing.T) {
 }
 
 func TestEmptyChunk(t *testing.T) {
-	chunks := chunk("AB", 3)
+	chunks := Chunk("AB", 3)
 
 	if len(chunks) != 0 {
 		t.Errorf("Chunks with slices returned a non-empty array")
@@ -26,7 +26,7 @@ func TestEmptyChunk(t *testing.T) {
 func TestMonograms(t *testing.T) {
 	expected := 26
 
-	monograms := grams(1)
+	monograms := Grams(1)
 	monogramCount := len(monograms)
 
 	if monogramCount != expected {

@@ -5,9 +5,10 @@ import (
 	"log"
 	"math"
 	"strconv"
+	"strings"
 )
 
-//go:embed english/*.txt
+//go:embed english
 var english embed.FS
 
 type NGrams int
@@ -26,7 +27,7 @@ var files = map[NGrams]string{
 	Quadgrams: "english/english_quadgrams.txt",
 }
 
-func grams(size NGrams) map[string]float64 {
+func Grams(size NGrams) map[string]float64 {
 	filename := files[size]
 	f, err := english.ReadFile(filename)
 	if err != nil {
@@ -68,7 +69,7 @@ func grams(size NGrams) map[string]float64 {
 	return gramCounts
 }
 
-func chunk(text string, size int) []string {
+func Chunk(text string, size int) []string {
 	text_len := len(text)
 	if text_len < size {
 		return []string{}
@@ -81,4 +82,12 @@ func chunk(text string, size int) []string {
 	}
 
 	return chunks
+}
+
+func Score(buffer []byte, frequency map[string]float64) float64 {
+	score := 0.0
+	for _, b := range buffer {
+		score += math.Max(math.Log(frequency[strings.ToLower(string(b))]), -100.0)
+	}
+	return score
 }
