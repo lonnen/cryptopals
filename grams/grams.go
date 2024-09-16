@@ -61,10 +61,11 @@ func Grams(size NGrams) map[string]float64 {
 		}
 		g := string(gram)
 		gramCounts[g], _ = strconv.ParseFloat(string(c), 64)
+		total += gramCounts[g]
 	}
 
 	for g, c := range gramCounts {
-		gramCounts[g] = math.Log(c / total)
+		gramCounts[g] = c / total
 	}
 	return gramCounts
 }
@@ -87,7 +88,7 @@ func Chunk(text string, size int) []string {
 func Score(buffer []byte, frequency map[string]float64) float64 {
 	score := 0.0
 	for _, b := range buffer {
-		score += math.Max(math.Log(frequency[strings.ToLower(string(b))]), -100.0)
+		score += math.Max(math.Log(frequency[strings.ToUpper(string(b))]), -100.0)
 	}
 	return score
 }
