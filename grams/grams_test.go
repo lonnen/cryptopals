@@ -23,6 +23,17 @@ func TestEmptyChunk(t *testing.T) {
 	}
 }
 
+func TestMultiWordChunk(t *testing.T) {
+	expected := [3]string{"CDEF", "DEFG", "HIJK"}
+	chunks := Chunk("AB CDEFG HIJK", 4)
+
+	for i := 0; i < len(expected); i++ {
+		if chunks[i] != expected[i] {
+			t.Errorf("Computed %q, Expected %q", chunks[i], expected[i])
+		}
+	}
+}
+
 func TestMonograms(t *testing.T) {
 	expected := 26
 

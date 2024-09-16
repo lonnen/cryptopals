@@ -71,15 +71,17 @@ func Grams(size NGrams) map[string]float64 {
 }
 
 func Chunk(text string, size int) []string {
-	text_len := len(text)
-	if text_len < size {
-		return []string{}
-	}
+	chunks := make([]string, 0)
 
-	chunks := make([]string, 0, text_len-size+1)
-
-	for i, j := 0, size; j < text_len; i, j = i+1, j+1 {
-		chunks = append(chunks, text[i:j])
+	words := strings.Fields(text)
+	for _, t := range words {
+		text_len := len(t)
+		if text_len < size {
+			continue
+		}
+		for i, j := 0, size; j <= text_len; i, j = i+1, j+1 {
+			chunks = append(chunks, t[i:j])
+		}
 	}
 
 	return chunks
@@ -87,7 +89,7 @@ func Chunk(text string, size int) []string {
 
 func Score(buffer []byte, frequency map[string]float64) float64 {
 	score := 0.0
-	for _, b := range buffer {
+	for _, b := range Chunk(string(buffer), 2) {
 		score += math.Max(math.Log(frequency[strings.ToUpper(string(b))]), -100.0)
 	}
 	return score
