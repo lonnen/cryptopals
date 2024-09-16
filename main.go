@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"math"
 )
 
@@ -63,7 +62,6 @@ func findSingleByteXOR(hexed string) (string, byte) {
 		key := byte(b)
 		decoded := xorCipherSingleByte(decoded_hexed, key)
 		score := grams.Score(decoded, englishLetterFrequency)
-		fmt.Printf("%s %g %s\n", string(key), score, string(decoded))
 		if score > bestScore {
 			bestScore = score
 			bestKey = key
