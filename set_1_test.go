@@ -55,7 +55,7 @@ func Test3SinglebyteXORcipher(t *testing.T) {
 var testFourProvided string
 
 func Test4DetectSinglebyteXOR(t *testing.T) {
-	const expected string = "Now that the party is jumping"
+	const expected string = "Now that the party is jumping\n"
 
 	computed, key, score := Set1Challenge4(testFourProvided)
 

@@ -51,8 +51,6 @@ func xorCipherSingleByte(cipher []byte, key byte) []byte {
 	return result
 }
 
-var englishLetterFrequency = grams.Grams(grams.Bigrams)
-
 func findSingleByteXOR(hexed string) (string, byte, float64) {
 	decoded_hexed, _ := hex.DecodeString(hexed)
 
@@ -62,7 +60,7 @@ func findSingleByteXOR(hexed string) (string, byte, float64) {
 	for b := range 256 {
 		key := byte(b)
 		decoded := xorCipherSingleByte(decoded_hexed, key)
-		score := grams.Score(decoded, englishLetterFrequency, grams.Bigrams)
+		score := grams.Score(decoded, grams.Bigrams)
 		if score > bestScore {
 			bestScore = score
 			bestKey = key

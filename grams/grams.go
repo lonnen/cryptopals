@@ -87,9 +87,10 @@ func Chunk(text string, size int) []string {
 	return chunks
 }
 
-func Score(buffer []byte, frequency map[string]float64, ngram int) float64 {
+func Score(buffer []byte, ngram NGrams) float64 {
+	frequency := Grams(ngram)
 	score := 0.0
-	for _, b := range Chunk(string(buffer), ngram) {
+	for _, b := range Chunk(string(buffer), int(ngram)) {
 		score += math.Max(math.Log(frequency[strings.ToUpper(string(b))]), -100.0)
 	}
 	return score
