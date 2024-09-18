@@ -21,4 +21,6 @@ Problem solutions are implemented as functions in `set_*.go` and verified by tes
 To run tests:
 ```shell
 $ go test
+
+$ go test --run Test5
 ```
