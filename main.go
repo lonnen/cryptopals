@@ -86,3 +86,12 @@ func detectSingleByteXOR(hexEncodedFile string) (string, byte, float64) {
 
 	return bestLine, bestKey, bestScore
 }
+
+func repeatingKeyXOR(plaintext []byte, key []byte) []byte {
+	xorText := []byte{}
+	for i, b := range plaintext {
+		xorText = append(xorText, b^key[i%len(key)])
+	}
+
+	return xorText
+}
