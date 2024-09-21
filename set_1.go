@@ -23,3 +23,11 @@ func Set1Challenge4(hexEncodedFile string) (string, byte, float64) {
 func Set1Challenge5(plaintext string, key string) string {
 	return hex.EncodeToString(repeatingKeyXOR([]byte(plaintext), []byte(key)))
 }
+
+func Set1Challenge6Hamming(a string, b string) int {
+	return 0
+}
+
+func Set1Challenge6(plaintext string, key string) string {
+	return plaintext
+}

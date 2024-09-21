@@ -75,3 +75,26 @@ func Test5DetectSinglebyteXOR(t *testing.T) {
 		t.Errorf("Computed %s\nExpected %s", computed, expected)
 	}
 }
+
+//go:embed data/set1challenge5.txt
+var testSixProvided string
+
+func Test6BreakRepeatingKeyXOR(t *testing.T) {
+	const provided string = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+	const key string = "ICE"
+	const expected string = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
+
+	const providedHammingA, providedHammingB string = "this is a test", "wokka wokka!!!"
+	const expectedHamming int = 37
+
+	computedHamming := Set1Challenge6Hamming(providedHammingA, providedHammingB)
+	if computedHamming != expectedHamming {
+		t.Errorf("Computed %s\nExpected %s", &computedHamming, expectedHamming)
+	}
+
+	computed := Set1Challenge6(testSixProvided, key)
+
+	if computed != expected {
+		t.Errorf("Computed %s\nExpected %s", computed, expected)
+	}
+}
