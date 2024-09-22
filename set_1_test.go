@@ -89,7 +89,7 @@ func Test6BreakRepeatingKeyXOR(t *testing.T) {
 
 	computedHamming := Set1Challenge6Hamming(providedHammingA, providedHammingB)
 	if computedHamming != expectedHamming {
-		t.Errorf("Computed %s\nExpected %s", &computedHamming, expectedHamming)
+		t.Errorf("Computed %v\nExpected %v", computedHamming, expectedHamming)
 	}
 
 	computed := Set1Challenge6(testSixProvided, key)
