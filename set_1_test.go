@@ -76,7 +76,7 @@ func Test5DetectSinglebyteXOR(t *testing.T) {
 	}
 }
 
-//go:embed data/set1challenge5.txt
+//go:embed data/set1challenge6.txt
 var testSixProvided string
 
 func Test6BreakRepeatingKeyXOR(t *testing.T) {
