@@ -95,3 +95,26 @@ func repeatingKeyXOR(plaintext []byte, key []byte) []byte {
 
 	return xorText
 }
+
+func hammingDistance(a, b []byte) (int, error) {
+	if len(a) != len(b) {
+		return -1, errors.New("strings ")
+	}
+
+	if len(a) == 0 {
+		return 0, nil
+	}
+
+	distance := 0
+	for i := range a {
+		// 1-bits in the XOR'd bytes represent differing bits
+		diff := a[i] ^ b[i]
+
+		for j := 0; j < 8; j++ {
+			distance += int(diff & 1)
+			diff >>= 1
+		}
+	}
+
+	return distance, nil
+}

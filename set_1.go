@@ -25,7 +25,8 @@ func Set1Challenge5(plaintext string, key string) string {
 }
 
 func Set1Challenge6Hamming(a string, b string) int {
-	return 0
+	distance, _ := hammingDistance([]byte(a), []byte(b))
+	return distance
 }
 
 func Set1Challenge6(plaintext string, key string) string {
