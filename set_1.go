@@ -8,16 +8,22 @@ func Set1Challenge1(i string) string {
 }
 
 func Set1Challenge2(p string, q string) string {
-	z, _ := xorCipherStrings(p, q)
-	return z
+	left, _ := hex.DecodeString(p)
+	right, _ := hex.DecodeString(q)
+	z, _ := xorCipherStrings(left, right)
+	return string(z)
 }
 
 func Set1Challenge3(hexEncoded string) (string, byte, float64) {
-	return findSingleByteXOR(hexEncoded)
+	d, _ := hex.DecodeString(hexEncoded)
+	line, key, score := findSingleByteXOR(d)
+	return string(line), key, score
 }
 
 func Set1Challenge4(hexEncodedFile string) (string, byte, float64) {
-	return detectSingleByteXOR(hexEncodedFile)
+	d, _ := hex.DecodeString(hexEncodedFile)
+	l, k, s := detectSingleByteXOR(d)
+	return string(l), k, s
 }
 
 func Set1Challenge5(plaintext string, key string) string {

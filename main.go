@@ -34,13 +34,11 @@ func xorCipher(left []byte, right []byte) ([]byte, error) {
 	return result, nil
 }
 
-func xorCipherStrings(left string, right string) (string, error) {
-	decoded_left, _ := hex.DecodeString(left)
-	decoded_right, _ := hex.DecodeString(right)
-	decoded, e := xorCipher(decoded_left, decoded_right)
+func xorCipherStrings(left []byte, right []byte) ([]byte, error) {
+	decoded, e := xorCipher(left, right)
 	reencoded := make([]byte, hex.EncodedLen(len(decoded)))
 	hex.Encode(reencoded, decoded)
-	return string(reencoded), e
+	return reencoded, e
 }
 
 func xorCipherSingleByte(cipher []byte, key byte) []byte {
@@ -51,28 +49,26 @@ func xorCipherSingleByte(cipher []byte, key byte) []byte {
 	return result
 }
 
-func findSingleByteXOR(hexed string) (string, byte, float64) {
-	decoded_hexed, _ := hex.DecodeString(hexed)
-
+func findSingleByteXOR(hexed []byte) ([]byte, byte, float64) {
 	bestKey := byte(0)
 	bestScore := math.Inf(-1)
-	bestMessage := ""
+	bestMessage := make([]byte, len(hexed))
 	for b := range 256 {
 		key := byte(b)
-		decoded := xorCipherSingleByte(decoded_hexed, key)
+		decoded := xorCipherSingleByte(hexed, key)
 		score := grams.Score(decoded, grams.Bigrams)
 		if score > bestScore {
 			bestScore = score
 			bestKey = key
-			bestMessage = string(decoded)
+			bestMessage = decoded
 		}
 	}
 
 	return bestMessage, bestKey, bestScore
 }
 
-func detectSingleByteXOR(hexEncodedFile string) (string, byte, float64) {
-	bestLine := ""
+func detectSingleByteXOR(hexEncodedFile []byte) ([]byte, byte, float64) {
+	bestLine := make([]byte, len())
 	bestKey := byte(0)
 	bestScore := math.Inf(-1)
 	for _, line := range strings.Split(hexEncodedFile, "\n") {
