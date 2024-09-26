@@ -76,13 +76,7 @@ func Test5DetectSinglebyteXOR(t *testing.T) {
 	}
 }
 
-//go:embed data/set1challenge6.txt
-var testSixProvided string
-
-func Test6BreakRepeatingKeyXOR(t *testing.T) {
-	const key string = "ICE"
-	const expected string = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
-
+func Test6AHamming(t *testing.T) {
 	const providedHammingA, providedHammingB string = "this is a test", "wokka wokka!!!"
 	const expectedHamming int = 37
 
@@ -90,6 +84,14 @@ func Test6BreakRepeatingKeyXOR(t *testing.T) {
 	if computedHamming != expectedHamming {
 		t.Errorf("Hamming: Computed %v\nExpected %v", computedHamming, expectedHamming)
 	}
+}
+
+//go:embed data/set1challenge6.txt
+var testSixProvided string
+
+func Test6BBreakRepeatingKeyXOR(t *testing.T) {
+	const key string = "ICE"
+	const expected string = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
 
 	computed := Set1Challenge6(testSixProvided, key)
 
