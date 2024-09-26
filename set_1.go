@@ -1,6 +1,10 @@
 package cryptopals
 
-import "encoding/hex"
+import (
+	"encoding/hex"
+	"math"
+	"strings"
+)
 
 func Set1Challenge1(i string) string {
 	b64, _ := hexToBase64(i)
@@ -21,9 +25,22 @@ func Set1Challenge3(hexEncoded string) (string, byte, float64) {
 }
 
 func Set1Challenge4(hexEncodedFile string) (string, byte, float64) {
-	d, _ := hex.DecodeString(hexEncodedFile)
-	l, k, s := detectSingleByteXOR(d)
-	return string(l), k, s
+	lines := strings.Split(hexEncodedFile, "\n")
+
+	bestLine := make([]byte, len(lines[0]))
+	bestKey := byte(0)
+	bestScore := math.Inf(-1)
+	for _, line := range lines {
+		decoded, _ := hex.DecodeString(line)
+		decoded, key, score := findSingleByteXOR(decoded)
+		if score > bestScore {
+			bestLine = decoded
+			bestKey = key
+			bestScore = score
+		}
+	}
+
+	return string(bestLine), bestKey, bestScore
 }
 
 func Set1Challenge5(plaintext string, key string) string {

@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"math"
-	"strings"
 )
 
 func hexToBase64(i string) (string, error) {
@@ -65,22 +64,6 @@ func findSingleByteXOR(hexed []byte) ([]byte, byte, float64) {
 	}
 
 	return bestMessage, bestKey, bestScore
-}
-
-func detectSingleByteXOR(hexEncodedFile []byte) ([]byte, byte, float64) {
-	bestLine := make([]byte, len())
-	bestKey := byte(0)
-	bestScore := math.Inf(-1)
-	for _, line := range strings.Split(hexEncodedFile, "\n") {
-		decoded, key, score := findSingleByteXOR(line)
-		if score > bestScore {
-			bestLine = decoded
-			bestKey = key
-			bestScore = score
-		}
-	}
-
-	return bestLine, bestKey, bestScore
 }
 
 func repeatingKeyXOR(plaintext []byte, key []byte) []byte {
