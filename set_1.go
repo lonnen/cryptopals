@@ -53,5 +53,14 @@ func Set1Challenge6Hamming(a string, b string) int {
 }
 
 func Set1Challenge6(plaintext string, key string) string {
+	// KEYSIZE is the guessed length of the key; try 2 to 40
+	// the Hamming Distance is the number of differing bits between two arrays
+	// for each KEYSIZE, take the first KEYSIZE of bytes and the second KEYSIZE of bytes and find the hamming distance normalized by KEYSIZE
+	// the KEYSIZE wit hteh smallest normalized edit distance is probably the key
+	// break the ciphertext into blocks of KEYSIZE length
+	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
+	// solve each block as single-character XOR
+	// for each block, the single-byte XOR key that produces the best histogram is the key for that block
+	// put the keys together for all the blocks to get the key
 	return plaintext
 }
