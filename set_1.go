@@ -53,10 +53,27 @@ func Set1Challenge6Hamming(a string, b string) int {
 }
 
 func Set1Challenge6(plaintext string, key string) string {
+	cipherText := []byte(plaintext)
+
+	distances := make([]int, 38)
+
 	// KEYSIZE is the guessed length of the key; try 2 to 40
-	// the Hamming Distance is the number of differing bits between two arrays
-	// for each KEYSIZE, take the first KEYSIZE of bytes and the second KEYSIZE of bytes and find the hamming distance normalized by KEYSIZE
-	// the KEYSIZE wit hteh smallest normalized edit distance is probably the key
+	for keySize := 2; keySize <= 40; keySize++ {
+		// for each KEYSIZE, take the first two KEYSIZE of bytes
+		// find the hamming distance and normalize it by KEYSIZE
+
+		first := cipherText[0:keySize]
+		second := cipherText[keySize+1 : keySize+keySize+1]
+
+		distance, e := hammingDistance(first, second)
+		if e != nil {
+			continue
+		}
+		normalizedDistance := float64(distance) / float64(keySize)
+		distances[keySize-1] = int(normalizedDistance)
+	}
+	// the KEYSIZE with the smallest normalized hamming distance is probably the key
+
 	// break the ciphertext into blocks of KEYSIZE length
 	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
 	// solve each block as single-character XOR
