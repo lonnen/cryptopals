@@ -56,41 +56,39 @@ func Set1Challenge6Hamming(a string, b string) int {
 func Set1Challenge6(plaintext string, key string) string {
 	cipherText := []byte(plaintext)
 
-	// KEYSIZE is the guessed length of the key
-	// from the prompt: "try 2 to 40"
-	smallestDistance := float64(len(cipherText))
-	smallestKeysize := 41
+	keyDistances := make(map[int]float64)
 	for keySize := 2; keySize <= 40; keySize++ {
-		// for each KEYSIZE, take the first two KEYSIZE of bytes
-		// find the hamming distance and normalize it by KEYSIZE
-
 		chunks := slices.Collect(slices.Chunk(cipherText, keySize))
 
-		maxChunks := max(len(chunks)-1, 10)
+		maxChunks := max(len(chunks)-1, 2)
 		totalDistance := 0.0
 		for i := 0; i < maxChunks; i++ {
 			distance, _ := hammingDistance(chunks[i], chunks[i+1])
-			totalDistance += float64(distance)
+			totalDistance += float64(distance) / float64(keySize)
 		}
-		normalizedDistance := totalDistance / float64(keySize) / float64(len(chunks))
+		normalizedDistance := totalDistance
 		println(keySize, normalizedDistance)
-		if normalizedDistance < smallestDistance {
-			smallestDistance = normalizedDistance
-			smallestKeysize = keySize
-		}
+		keyDistances[keySize] = normalizedDistance
 	}
-	println("WINNER")
-	println(smallestKeysize, smallestDistance)
 
 	// the KEYSIZE with the smallest normalized hamming distance is probably the key
 
 	// break the ciphertext into blocks of KEYSIZE length
-
-	hex.EncodeToString(repeatingKeyXOR([]byte(plaintext), []byte(key)))
+	keySize := 3
+	chunks := slices.Collect(slices.Chunk(cipherText, keySize))
 
 	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
+	transposed := make([][]byte, len(chunks)) // len(chunks), keySize
+	for i := 0; i < len(chunks); i++ {
+		for j := 0; j < keySize; j++ {
+			transposed[j] = append(transposed[j], chunks[i][j])
+		}
+	}
+
 	// solve each block as single-character XOR
 	// for each block, the single-byte XOR key that produces the best histogram is the key for that block
+	decrypted := hex.EncodeToString(repeatingKeyXOR([]byte(plaintext), []byte(key)))
+
 	// put the keys together for all the blocks to get the key
 	return plaintext
 }
