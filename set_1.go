@@ -3,6 +3,7 @@ package cryptopals
 import (
 	"encoding/hex"
 	"math"
+	"slices"
 	"strings"
 )
 
@@ -55,26 +56,38 @@ func Set1Challenge6Hamming(a string, b string) int {
 func Set1Challenge6(plaintext string, key string) string {
 	cipherText := []byte(plaintext)
 
-	distances := make([]int, 38)
-
-	// KEYSIZE is the guessed length of the key; try 2 to 40
+	// KEYSIZE is the guessed length of the key
+	// from the prompt: "try 2 to 40"
+	smallestDistance := float64(len(cipherText))
+	smallestKeysize := 41
 	for keySize := 2; keySize <= 40; keySize++ {
 		// for each KEYSIZE, take the first two KEYSIZE of bytes
 		// find the hamming distance and normalize it by KEYSIZE
 
-		first := cipherText[0:keySize]
-		second := cipherText[keySize+1 : keySize+keySize+1]
+		chunks := slices.Collect(slices.Chunk(cipherText, keySize))
 
-		distance, e := hammingDistance(first, second)
-		if e != nil {
-			continue
+		maxChunks := max(len(chunks)-1, 10)
+		totalDistance := 0.0
+		for i := 0; i < maxChunks; i++ {
+			distance, _ := hammingDistance(chunks[i], chunks[i+1])
+			totalDistance += float64(distance)
 		}
-		normalizedDistance := float64(distance) / float64(keySize)
-		distances[keySize-1] = int(normalizedDistance)
+		normalizedDistance := totalDistance / float64(keySize) / float64(len(chunks))
+		println(keySize, normalizedDistance)
+		if normalizedDistance < smallestDistance {
+			smallestDistance = normalizedDistance
+			smallestKeysize = keySize
+		}
 	}
+	println("WINNER")
+	println(smallestKeysize, smallestDistance)
+
 	// the KEYSIZE with the smallest normalized hamming distance is probably the key
 
 	// break the ciphertext into blocks of KEYSIZE length
+
+	hex.EncodeToString(repeatingKeyXOR([]byte(plaintext), []byte(key)))
+
 	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
 	// solve each block as single-character XOR
 	// for each block, the single-byte XOR key that produces the best histogram is the key for that block
