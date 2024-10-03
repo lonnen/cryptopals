@@ -67,7 +67,6 @@ func Set1Challenge6(plaintext string, key string) string {
 			totalDistance += float64(distance) / float64(keySize)
 		}
 		normalizedDistance := totalDistance
-		println(keySize, normalizedDistance)
 		keyDistances[keySize] = normalizedDistance
 	}
 
@@ -75,20 +74,25 @@ func Set1Challenge6(plaintext string, key string) string {
 
 	// break the ciphertext into blocks of KEYSIZE length
 	keySize := 3
-	chunks := slices.Collect(slices.Chunk(cipherText, keySize))
+	chunks := make([][]byte, (len(cipherText) % keySize))
+	for i := range slices.Chunk(cipherText, keySize) {
+		chunks = append(chunks, i)
+	}
+	chunkCount := len(chunks)
+
+	println(chunkCount)
+	// for i := range chunks {
+	// 	//println(i)
+	// }
 
 	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
-	transposed := make([][]byte, len(chunks)) // len(chunks), keySize
-	for i := 0; i < len(chunks); i++ {
-		for j := 0; j < keySize; j++ {
-			transposed[j] = append(transposed[j], chunks[i][j])
-		}
-	}
+	transposed := transpose(chunks)
+	println(len(transposed))
 
 	// solve each block as single-character XOR
 	// for each block, the single-byte XOR key that produces the best histogram is the key for that block
 	decrypted := hex.EncodeToString(repeatingKeyXOR([]byte(plaintext), []byte(key)))
 
 	// put the keys together for all the blocks to get the key
-	return plaintext
+	return decrypted
 }
