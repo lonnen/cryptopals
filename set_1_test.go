@@ -82,7 +82,22 @@ func Test6AHamming(t *testing.T) {
 
 	computedHamming := Set1Challenge6Hamming(providedHammingA, providedHammingB)
 	if computedHamming != expectedHamming {
-		t.Errorf("Hamming: Computed %v\nExpected %v", computedHamming, expectedHamming)
+		t.Errorf("\nHamming: Computed %v\nExpected %v\n", computedHamming, expectedHamming)
+	}
+}
+
+func Test6Transpose(t *testing.T) {
+	provided := [][]byte{{0, 0, 0}, {1, 1, 1}, {2, 2, 2}}
+	expected := [][]byte{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}}
+
+	computed := transpose(provided)
+
+	for i := range provided {
+		for j := range provided[i] {
+			if computed[i][j] != expected[i][j] {
+				t.Errorf("\nComputed %x\nExpected %x\n", computed[i], expected[i])
+			}
+		}
 	}
 }
 
