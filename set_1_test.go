@@ -22,7 +22,7 @@ func Test1ConvertHexToBase64(t *testing.T) {
 	computed := Set1Challenge1(provided)
 
 	if computed != expected {
-		t.Errorf("Computed %q, Expected %q", computed, expected)
+		t.Errorf("\nComputed %q, Expected %q\n", computed, expected)
 	}
 }
 
@@ -35,7 +35,7 @@ func Test2FixedXOR(t *testing.T) {
 	computed := Set1Challenge2(provided, provided_xor)
 
 	if computed != expected {
-		t.Errorf("Computed %q, Expected %q", computed, expected)
+		t.Errorf("\nComputed %q, Expected %q\n", computed, expected)
 	}
 }
 
@@ -47,7 +47,7 @@ func Test3SinglebyteXORcipher(t *testing.T) {
 	computed, key, score := Set1Challenge3(provided)
 
 	if computed != expected {
-		t.Errorf("Computed %q, %q, %f\nExpected %q", computed, key, score, expected)
+		t.Errorf("\nComputed %q, %q, %f\nExpected %q\n", computed, key, score, expected)
 	}
 }
 
@@ -60,7 +60,7 @@ func Test4DetectSinglebyteXOR(t *testing.T) {
 	computed, key, score := Set1Challenge4(testFourProvided)
 
 	if computed != expected {
-		t.Errorf("Computed %q, %q, %f\nExpected %q", computed, key, score, expected)
+		t.Errorf("\nComputed %q, %q, %f\nExpected %q\n", computed, key, score, expected)
 	}
 }
 
@@ -72,7 +72,7 @@ func Test5DetectSinglebyteXOR(t *testing.T) {
 	computed := Set1Challenge5(provided, key)
 
 	if computed != expected {
-		t.Errorf("Computed %s\nExpected %s", computed, expected)
+		t.Errorf("\nComputed %s\nExpected %s\n", computed, expected)
 	}
 }
 
@@ -111,6 +111,6 @@ func Test6BBreakRepeatingKeyXOR(t *testing.T) {
 	computed := Set1Challenge6(testSixProvided, key)
 
 	if computed != expected {
-		t.Errorf("Challenge: Computed %s\nExpected %s", computed, expected)
+		t.Errorf("\nComputed %s\nExpected %s\n", computed, expected)
 	}
 }
