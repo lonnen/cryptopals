@@ -16,10 +16,6 @@ func hexToBase64(i string) (string, error) {
 	return base64.StdEncoding.EncodeToString(bytes), nil
 }
 
-func xor(left byte, right byte) byte {
-	return left ^ right
-}
-
 func xorCipher(left []byte, right []byte) ([]byte, error) {
 	if len(left) != len(right) {
 		return nil, errors.New("buffers must have the same length")
