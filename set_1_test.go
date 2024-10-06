@@ -105,10 +105,9 @@ func Test6Transpose(t *testing.T) {
 var testSixProvided string
 
 func Test6BBreakRepeatingKeyXOR(t *testing.T) {
-	const key string = "ICE"
-	const expected string = "Terminator X: Bring the noise"
+	const expected string = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
 
-	computed := Set1Challenge6(testSixProvided, key)
+	computed := Set1Challenge6(testSixProvided)
 
 	if computed != expected {
 		t.Errorf("\nComputed %s\nExpected %s\n", computed, expected)
