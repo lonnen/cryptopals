@@ -54,7 +54,13 @@ func Set1Challenge6Hamming(a string, b string) int {
 	return distance
 }
 
-func Set1Challenge6(plaintext string, key string) string {
+func Set1Challenge6FindKeysize(plaintext string) int {
+	cipherText := []byte(plaintext)
+
+	return findKeysize(cipherText, 2, 40)
+}
+
+func Set1Challenge6(plaintext string) string {
 	cipherText := []byte(plaintext)
 
 	keyDistances := make(map[int]float64)
@@ -74,7 +80,7 @@ func Set1Challenge6(plaintext string, key string) string {
 
 	bestLine := ""
 	bestKey := ""
-	bestCost := math.Inf(-1)
+	bestCost := math.Inf(1)
 
 	// break the ciphertext into blocks of KEYSIZE length
 	keySize := 3
@@ -82,17 +88,13 @@ func Set1Challenge6(plaintext string, key string) string {
 	for i := range slices.Chunk(cipherText, keySize) {
 		chunks = append(chunks, i)
 	}
-	chunkCount := len(chunks)
-
-	println(chunkCount)
 
 	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
 	transposed := transpose(chunks)
-	println(len(transposed))
 
 	// solve each block as single-character XOR
 	keys := []byte{}
-	totalCost := math.Inf(-1)
+	totalCost := 0.0
 	for b := range transposed {
 		block := transposed[b]
 		// for each block, the single-byte XOR key that produces the
@@ -102,16 +104,16 @@ func Set1Challenge6(plaintext string, key string) string {
 		totalCost += cost
 	}
 
-	if totalCost > bestCost {
+	println(totalCost, bestCost)
+	if totalCost < bestCost {
 		bestKey = string(keys)
-		bestCost = totalCost
 		bestLine = string(repeatingKeyXOR(cipherText, keys))
+		bestCost = totalCost
+
 		println("NEW BEST")
-		fmt.Printf("key: %s, cost: %f, line: %s", bestKey, bestCost, bestLine)
+		fmt.Printf("cost: %f, key: %s, line: %s\n", bestCost, bestKey, bestLine)
 	}
 
-	fmt.Printf("key: %s", string(bestKey))
-
 	// put the keys together for all the blocks to get the key
-	return bestLine
+	return bestKey
 }
