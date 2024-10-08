@@ -104,12 +104,12 @@ func Test6Transpose(t *testing.T) {
 //go:embed data/set1challenge6.txt
 var testSixProvided string
 
-func Test6BBreakRepeatingKeyXOR(t *testing.T) {
-	const expected string = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+func Test6FindRepeatingKeyXORKeysize(t *testing.T) {
+	const expected int = 3
 
-	computed := Set1Challenge6(testSixProvided)
+	computed := Set1Challenge6FindKeysize(testSixProvided)
 
 	if computed != expected {
-		t.Errorf("\nComputed %s\nExpected %s\n", computed, expected)
+		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
 	}
 }
