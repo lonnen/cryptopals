@@ -57,39 +57,24 @@ func Set1Challenge6Hamming(a string, b string) int {
 func Set1Challenge6FindKeysize(plaintext string) int {
 	cipherText := []byte(plaintext)
 
-	return findKeysize(cipherText, 2, 40)
+	return findKeysize(cipherText, 2, 40) // 2, 40 are magic numbers provided by prompt
 }
 
 func Set1Challenge6(plaintext string) string {
 	cipherText := []byte(plaintext)
 
-	keyDistances := make(map[int]float64)
-	for keySize := 2; keySize <= 40; keySize++ {
-		chunks := slices.Collect(slices.Chunk(cipherText, keySize))
-
-		maxChunks := max(len(chunks)-1, 2)
-		totalDistance := 0.0
-		for i := 0; i < maxChunks; i++ {
-			distance, _ := hammingDistance(chunks[i], chunks[i+1])
-			totalDistance += float64(distance) / float64(keySize)
-		}
-		normalizedDistance := totalDistance
-		keyDistances[keySize] = normalizedDistance
-	}
-	// the KEYSIZE with the smallest normalized hamming distance is probably the key
-
 	bestLine := ""
 	bestKey := ""
 	bestCost := math.Inf(1)
 
-	// break the ciphertext into blocks of KEYSIZE length
-	keySize := 3
-	chunks := make([][]byte, (len(cipherText) % keySize))
-	for i := range slices.Chunk(cipherText, keySize) {
-		chunks = append(chunks, i)
-	}
+	keySize := findKeysize(cipherText, 2, 40) // 2, 40 are magic numbers provided by prompt
 
-	// transpose the blocks (a block of the first byte of each block, then the second byte of each block, etc)
+	// chunks := make([][]byte, (len(cipherText) % keySize))
+	// for i := range slices.Chunk(cipherText, keySize) {
+	// 	chunks = append(chunks, i)
+	// }
+
+	chunks := slices.Collect(slices.Chunk(cipherText, keySize))
 	transposed := transpose(chunks)
 
 	// solve each block as single-character XOR
@@ -104,7 +89,6 @@ func Set1Challenge6(plaintext string) string {
 		totalCost += cost
 	}
 
-	println(totalCost, bestCost)
 	if totalCost < bestCost {
 		bestKey = string(keys)
 		bestLine = string(repeatingKeyXOR(cipherText, keys))
