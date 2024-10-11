@@ -96,11 +96,15 @@ func hammingDistance(a, b []byte) (int, error) {
 	return distance, nil
 }
 
-func transpose(a [][]byte) [][]byte {
-	newArr := make([][]byte, len(a))
-	for i := 0; i < len(a); i++ {
-		for j := 0; j < len(a[0]); j++ {
-			newArr[j] = append(newArr[j], a[i][j])
+func transpose(arr [][]byte) [][]byte {
+	height := len(arr)
+	length := len(arr[0])
+
+	newArr := make([][]byte, length)
+	for i := 0; i < length; i++ {
+		newArr[i] = make([]byte, height)
+		for j := 0; j < height; j++ {
+			newArr[i][j] = arr[j][i]
 		}
 	}
 	return newArr

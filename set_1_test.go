@@ -107,8 +107,8 @@ func Test6TransposeWider(t *testing.T) {
 
 	computed := transpose(provided)
 
-	for i := range provided {
-		for j := range provided[i] {
+	for i := range expected {
+		for j := range expected[i] {
 			if computed[i][j] != expected[i][j] {
 				t.Errorf("\nComputed %x\nExpected %x\n", computed[i], expected[i])
 			}
@@ -118,12 +118,12 @@ func Test6TransposeWider(t *testing.T) {
 
 func Test6TransposeTaller(t *testing.T) {
 	provided := [][]byte{{0, 0, 0}, {1, 1, 1}, {2, 2, 2}, {3, 3, 3}, {4, 4, 4}}
-	expected := [][]byte{{0, 1, 2, 3, 4}, {0, 1, 2, 3, 4}, {0, 1, 2, 3, 4}, {0, 1, 2, 3, 4}}
+	expected := [][]byte{{0, 1, 2, 3, 4}, {0, 1, 2, 3, 4}, {0, 1, 2, 3, 4}}
 
 	computed := transpose(provided)
 
-	for i := range provided {
-		for j := range provided[i] {
+	for i := range expected {
+		for j := range expected[i] {
 			if computed[i][j] != expected[i][j] {
 				t.Errorf("\nComputed %x\nExpected %x\n", computed[i], expected[i])
 			}
