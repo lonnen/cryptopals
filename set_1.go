@@ -61,7 +61,10 @@ func Set1Challenge6FindKeysize(plaintext string) int {
 }
 
 func Set1Challenge6(plaintext string) string {
-	cipherText := []byte(plaintext)
+	cipherText, err := base64.StdEncoding.DecodeString(plaintext)
+	if err != nil {
+		return "" // this will fail
+	}
 
 	bestLine := ""
 	bestKey := ""
