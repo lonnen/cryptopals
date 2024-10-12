@@ -135,11 +135,18 @@ func Test6TransposeTaller(t *testing.T) {
 var testSixProvided string
 
 func Test6FindKeysize(t *testing.T) {
-	const expected int = 3
+	const expected int = 29
 
 	computed := Set1Challenge6FindKeysize(testSixProvided)
 
-	if computed != expected {
+	found := false
+	for _, k := range computed {
+		if k.Key == expected {
+			found = true
+		}
+	}
+
+	if !found {
 		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
 	}
 }

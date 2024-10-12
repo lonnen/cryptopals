@@ -121,7 +121,7 @@ func (k KeyScores) Len() int           { return len(k) }
 func (k KeyScores) Swap(i, j int)      { k[i], k[j] = k[j], k[i] }
 func (k KeyScores) Less(i, j int) bool { return k[i].Value < k[j].Value }
 
-func findKeysize(cipherText []byte, lowerBound int, upperBound int) int {
+func findKeysize(cipherText []byte, lowerBound int, upperBound int) []KeyScore {
 	keyDistances := make(KeyScores, (upperBound - lowerBound))
 	for keySize := lowerBound; keySize < upperBound; keySize++ {
 		chunks := slices.Collect(slices.Chunk(cipherText, keySize))
@@ -138,5 +138,5 @@ func findKeysize(cipherText []byte, lowerBound int, upperBound int) int {
 
 	sort.Sort(keyDistances)
 
-	return keyDistances[0].Key
+	return keyDistances[:3]
 }
