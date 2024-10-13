@@ -1,8 +1,8 @@
 package cryptopals
 
 import (
+	"encoding/base64"
 	"encoding/hex"
-	"fmt"
 	"math"
 	"slices"
 	"strings"
@@ -54,51 +54,48 @@ func Set1Challenge6Hamming(a string, b string) int {
 	return distance
 }
 
-func Set1Challenge6FindKeysize(plaintext string) int {
-	cipherText := []byte(plaintext)
-
+func Set1Challenge6FindKeysize(plaintext string) []KeyScore {
+	cipherText, _ := base64.StdEncoding.DecodeString(plaintext)
 	return findKeysize(cipherText, 2, 40) // 2, 40 are magic numbers provided by prompt
 }
 
 func Set1Challenge6(plaintext string) string {
-	cipherText, err := base64.StdEncoding.DecodeString(plaintext)
-	if err != nil {
-		return "" // this will fail
-	}
+	cipherText, _ := base64.StdEncoding.DecodeString(plaintext)
 
-	bestLine := ""
+	//bestLine := ""
 	bestKey := ""
-	bestCost := math.Inf(1)
+	bestScore := math.Inf(-1)
 
-	keySize := findKeysize(cipherText, 2, 40) // 2, 40 are magic numbers provided by prompt
+	for _, keySize := range findKeysize(cipherText, 2, 40) { // 2, 40 are magic numbers provided by prompt
 
-	// chunks := make([][]byte, (len(cipherText) % keySize))
-	// for i := range slices.Chunk(cipherText, keySize) {
-	// 	chunks = append(chunks, i)
-	// }
+		// if the message is too short, pad it with a 1 followed by 0s until it divides evenly by the key
+		padding := make([]byte, keySize.Key-(len(cipherText)%keySize.Key))
+		if len(padding) > 0 {
+			padding[0] = 1
+			cipherText = append(cipherText, padding...)
+		}
+		chunks := slices.Collect(slices.Chunk(cipherText, keySize.Key))
 
-	chunks := slices.Collect(slices.Chunk(cipherText, keySize))
-	transposed := transpose(chunks)
+		transposed := transpose(chunks)
 
-	// solve each block as single-character XOR
-	keys := []byte{}
-	totalCost := 0.0
-	for b := range transposed {
-		block := transposed[b]
-		// for each block, the single-byte XOR key that produces the
-		// best letter frequency distribution is the key for that block
-		_, key, cost := findSingleByteXOR(block)
-		keys = append(keys, key)
-		totalCost += cost
-	}
+		// solve each block as single-character XOR
+		keys := []byte{}
+		totalScore := 0.0
 
-	if totalCost < bestCost {
-		bestKey = string(keys)
-		bestLine = string(repeatingKeyXOR(cipherText, keys))
-		bestCost = totalCost
+		for b := range transposed {
+			block := transposed[b]
+			// for each block, the single-byte XOR key that produces the
+			// best letter frequency distribution is the key for that block
+			_, key, score := findSingleByteXOR(block)
+			keys = append(keys, key)
+			totalScore += score
+		}
 
-		println("NEW BEST")
-		fmt.Printf("cost: %f, key: %s, line: %s\n", bestCost, bestKey, bestLine)
+		if totalScore > bestScore {
+			bestKey = string(keys)
+			//bestLine = string(repeatingKeyXOR(cipherText, keys))
+			bestScore = totalScore
+		}
 	}
 
 	// put the keys together for all the blocks to get the key
