@@ -152,7 +152,7 @@ func Test6FindKeysize(t *testing.T) {
 }
 
 func Test6FindRepeatingKeyXOR(t *testing.T) {
-	expected := "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+	expected := "Terminator X: Bring the noise"
 
 	computed := Set1Challenge6(testSixProvided)
 
