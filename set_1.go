@@ -60,20 +60,16 @@ func Set1Challenge6FindKeysize(plaintext string) []KeyScore {
 }
 
 func Set1Challenge6(plaintext string) string {
-	cipherText, _ := base64.StdEncoding.DecodeString(plaintext)
+	decoded, _ := base64.StdEncoding.DecodeString(plaintext)
 
 	//bestLine := ""
 	bestKey := ""
 	bestScore := math.Inf(-1)
 
-	for _, keySize := range findKeysize(cipherText, 2, 40) { // 2, 40 are magic numbers provided by prompt
+	for _, keySize := range findKeysize(decoded, 2, 40) { // 2, 40 are magic numbers provided by prompt
 
-		// if the message is too short, pad it with a 1 followed by 0s until it divides evenly by the key
-		padding := make([]byte, keySize.Key-(len(cipherText)%keySize.Key))
-		if len(padding) > 0 {
-			padding[0] = 1
-			cipherText = append(cipherText, padding...)
-		}
+		cipherText := padToMultipleOf(decoded, keySize.Key)
+
 		chunks := slices.Collect(slices.Chunk(cipherText, keySize.Key))
 
 		transposed := transpose(chunks)
