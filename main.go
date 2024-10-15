@@ -140,3 +140,14 @@ func findKeysize(cipherText []byte, lowerBound int, upperBound int) []KeyScore {
 
 	return keyDistances[:3]
 }
+
+func padToMultipleOf(text []byte, multipleLength int) []byte {
+	// if the message is too short, pad it with a 1 followed by 0s until it divides evenly by the key
+	padding := make([]byte, multipleLength-(len(text)%multipleLength))
+	if len(padding) > 0 {
+		padding[0] = 1
+		text = append(text, padding...)
+	}
+
+	return text
+}
