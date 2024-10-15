@@ -2,6 +2,7 @@ package cryptopals
 
 import (
 	_ "embed"
+	"fmt"
 	"testing"
 )
 
@@ -159,4 +160,19 @@ func Test6FindRepeatingKeyXOR(t *testing.T) {
 	if computed != expected {
 		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
 	}
+}
+
+//go:embed data/set1challenge4.txt
+var testSevenProvided string
+
+func Test7AESInECB(t *testing.T) {
+	providedKey := "YELLOW SUBMARINE"
+	//expected := "Terminator X: Bring the noise"
+
+	computed := Set1Challenge7(testSevenProvided, providedKey)
+
+	fmt.Println(computed)
+	// if computed != expected {
+	// 	t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
+	// }
 }
