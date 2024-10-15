@@ -1,6 +1,7 @@
 package cryptopals
 
 import (
+	"crypto/aes"
 	"encoding/base64"
 	"encoding/hex"
 	"math"
@@ -96,4 +97,24 @@ func Set1Challenge6(plaintext string) string {
 
 	// put the keys together for all the blocks to get the key
 	return bestKey
+}
+
+func Set1Challenge7(text, key string) string {
+	blockSize := 16
+
+	decoded, _ := base64.StdEncoding.DecodeString(text)
+
+	cipherText := padToMultipleOf(decoded, len(key))
+
+	plainText := make([]byte, len(cipherText))
+	cipher, _ := aes.NewCipher([]byte(key))
+
+	srcChunks := slices.Collect(slices.Chunk(cipherText, blockSize))
+	dstChunks := slices.Collect(slices.Chunk(plainText, blockSize))
+
+	for i := range srcChunks {
+		cipher.Decrypt(dstChunks[i], srcChunks[i])
+	}
+
+	return string(plainText)
 }
