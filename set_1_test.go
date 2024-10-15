@@ -162,7 +162,7 @@ func Test6FindRepeatingKeyXOR(t *testing.T) {
 	}
 }
 
-//go:embed data/set1challenge4.txt
+//go:embed data/set1challenge7.txt
 var testSevenProvided string
 
 func Test7AESInECB(t *testing.T) {
