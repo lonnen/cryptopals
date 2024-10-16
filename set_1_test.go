@@ -175,3 +175,16 @@ func Test7AESInECB(t *testing.T) {
 		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
 	}
 }
+
+//go:embed data/set1challenge8.txt
+var testEightProvided string
+
+func Test8AESInECB(t *testing.T) {
+	expected := "I'm back and I'm ringin' the bell"
+
+	computed := Set1Challenge8(testSevenProvided)
+
+	if !strings.Contains(computed, expected) {
+		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
+	}
+}
