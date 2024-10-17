@@ -180,11 +180,11 @@ func Test7AESInECB(t *testing.T) {
 var testEightProvided string
 
 func Test8AESInECB(t *testing.T) {
-	expected := "I'm back and I'm ringin' the bell"
+	expected_line_id := 132
 
-	computed := Set1Challenge8(testSevenProvided)
+	computed_line_id := Set1Challenge8(testEightProvided)
 
-	if !strings.Contains(computed, expected) {
-		t.Errorf("\nComputed %v\nExpected %v\n", computed, expected)
+	if computed_line_id != expected_line_id {
+		t.Errorf("\nComputed %v\nExpected %v\n", computed_line_id, expected_line_id)
 	}
 }

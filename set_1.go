@@ -1,6 +1,7 @@
 package cryptopals
 
 import (
+	"bytes"
 	"crypto/aes"
 	"encoding/base64"
 	"encoding/hex"
@@ -117,4 +118,38 @@ func Set1Challenge7(text, key string) string {
 	}
 
 	return string(plainText)
+}
+
+func Set1Challenge8(text string) int {
+	blockSize := 16
+
+	lines := strings.Split(strings.TrimSpace(string(text)), "\n")
+
+	bestCount := 0
+	bestLine := -1
+
+	for line_number, line := range lines {
+		decoded, _ := base64.StdEncoding.DecodeString(line)
+		cipherText := padToMultipleOf(decoded, blockSize)
+		blocks := slices.Collect(slices.Chunk(cipherText, blockSize))
+
+		// ECB lacks diffusion, so some patterns in the original text are preserved
+		// they can be detected by looking for unevenly-distributed non-noisy values
+
+		sameBlockCount := 0
+		for i := 0; i < len(blocks); i++ {
+			for j := 0; j < len(blocks); j++ {
+				if bytes.Equal(blocks[i], blocks[j]) {
+					sameBlockCount = sameBlockCount + 1
+				}
+			}
+		}
+
+		if sameBlockCount > bestCount {
+			bestCount = sameBlockCount
+			bestLine = line_number
+		}
+	}
+
+	return bestLine
 }
