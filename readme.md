@@ -5,7 +5,7 @@
 
 ### Implementation status
 
-- [ ] [Set 1: Basics](https://www.cryptopals.com/sets/1)
+- [x] [Set 1: Basics](https://www.cryptopals.com/sets/1)
 - [ ] [Set 2: Block crypto](https://www.cryptopals.com/sets/2)
 - [ ] [Set 3: Block & stream crypto](https://www.cryptopals.com/sets/3)
 - [ ] [Set 4: Stream crypto and randomness](https://www.cryptopals.com/sets/4)
@@ -20,7 +20,9 @@ Problem solutions are implemented as functions in `set_*.go` and verified by tes
 
 To run tests:
 ```shell
+# run all the tests
 $ go test
 
+# run a single test
 $ go test --run Test5
 ```
