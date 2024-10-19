@@ -2,21 +2,12 @@ package cryptopals
 
 import (
 	"cryptopals/grams"
-	"encoding/base64"
 	"encoding/hex"
 	"errors"
 	"math"
 	"slices"
 	"sort"
 )
-
-func hexToBase64(i string) (string, error) {
-	bytes, err := hex.DecodeString(i)
-	if err != nil {
-		return "", err
-	}
-	return base64.StdEncoding.EncodeToString(bytes), nil
-}
 
 func xorCipher(left []byte, right []byte) ([]byte, error) {
 	if len(left) != len(right) {

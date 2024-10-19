@@ -11,8 +11,8 @@ import (
 )
 
 func Set1Challenge1(i string) string {
-	b64, _ := hexToBase64(i)
-	return b64
+	decoded, _ := hex.DecodeString(i)
+	return base64.StdEncoding.EncodeToString(decoded)
 }
 
 func Set1Challenge2(p string, q string) string {
