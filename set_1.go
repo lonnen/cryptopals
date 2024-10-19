@@ -95,7 +95,6 @@ func Set1Challenge6(plaintext string) string {
 
 		if totalScore > bestScore {
 			bestKey = string(keys)
-			//bestLine = string(repeatingKeyXOR(cipherText, keys))
 			bestScore = totalScore
 		}
 	}
