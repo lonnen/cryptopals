@@ -2,7 +2,6 @@ package cryptopals
 
 import (
 	"cryptopals/grams"
-	"encoding/hex"
 	"errors"
 	"math"
 	"slices"
@@ -20,13 +19,6 @@ func xorCipher(left []byte, right []byte) ([]byte, error) {
 	}
 
 	return result, nil
-}
-
-func xorCipherStrings(left []byte, right []byte) ([]byte, error) {
-	decoded, e := xorCipher(left, right)
-	reencoded := make([]byte, hex.EncodedLen(len(decoded)))
-	hex.Encode(reencoded, decoded)
-	return reencoded, e
 }
 
 func xorCipherSingleByte(cipher []byte, key byte) []byte {

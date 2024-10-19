@@ -18,8 +18,12 @@ func Set1Challenge1(i string) string {
 func Set1Challenge2(p string, q string) string {
 	left, _ := hex.DecodeString(p)
 	right, _ := hex.DecodeString(q)
-	z, _ := xorCipherStrings(left, right)
-	return string(z)
+
+	decoded, _ := xorCipher(left, right)
+	reencoded := make([]byte, hex.EncodedLen(len(decoded)))
+	hex.Encode(reencoded, decoded)
+
+	return string(reencoded)
 }
 
 func Set1Challenge3(hexEncoded string) (string, byte, float64) {
