@@ -47,15 +47,6 @@ func findSingleByteXOR(hexed []byte) ([]byte, byte, float64) {
 	return bestMessage, bestKey, bestScore
 }
 
-func repeatingKeyXOR(plaintext []byte, key []byte) []byte {
-	xorText := []byte{}
-	for i, b := range plaintext {
-		xorText = append(xorText, b^key[i%len(key)])
-	}
-
-	return xorText
-}
-
 func hammingDistance(a, b []byte) (int, error) {
 	if len(a) != len(b) {
 		return -1, errors.New("strings ")
