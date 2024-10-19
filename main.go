@@ -151,3 +151,13 @@ func padToMultipleOf(text []byte, multipleLength int) []byte {
 
 	return text
 }
+
+func padPKCS7(text []byte, multipleLength int) []byte {
+	// if the message is too short, pad it with a 1 followed by 0s until it divides evenly by the key
+	padding := make([]byte, multipleLength-(len(text)%multipleLength))
+	for i := range padding {
+		padding[i] = 0x04
+	}
+
+	return text
+}
