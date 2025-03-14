@@ -2,6 +2,7 @@
 
 [Cryptopals](https://www.cryptopals.com/) challenges are supposed to be a fun way to learn a new language, so maybe now's the time to pick up Go?
 
+[![test status badge](https://github.com/lonnen/cryptopals/actions/workflows/test.yml/badge.svg)](https://github.com/lonnen/cryptopals/actions/workflows/test.yml)
 
 ### Implementation status
 
